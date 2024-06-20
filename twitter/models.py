@@ -9,7 +9,7 @@ class Profile(models.Model):
     date_joined = models.DateTimeField(auto_now_add=True)
 
 class Post(models.Model): 
-    profile = models.ManyToManyField(Profile, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=180)
     # content_image = models.ImageField()
     like = models.IntegerField()
