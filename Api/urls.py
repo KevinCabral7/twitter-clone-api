@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from twitter import views
-
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'post', views.PostViewSet)
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path("api/user/register/", views.CreateUserView.as_view(), name='register'),
+    path('api/token/', TokenObtainPairView.as_view(), name='get_token'),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
+    path('api-auth/', include("rest_framework.urls")),
+    path('api/', include('twitter.urls')),
 ]
